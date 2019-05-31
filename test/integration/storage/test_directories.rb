@@ -51,6 +51,10 @@ class TestStorageRequests < StorageShared
     assert_nil(@client.directories.get(dir_name))
   end
 
+  def test_directories_destroy_nonexistent
+    refute(@client.directories.destroy("iamanonexistentbucketama"))
+  end
+
   def test_directories_all
     dir_name = new_bucket_name
     @client.directories.create(:key => dir_name)

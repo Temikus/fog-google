@@ -100,6 +100,7 @@ class TestStorageRequests < StorageShared
 
     @client.directories.get(some_bucket_name).files.destroy(file_name)
 
+    refute(@client.directories.get(some_bucket_name).files.destroy(file_name))
     assert_nil(@client.directories.get(some_bucket_name).files.get(file_name))
   end
 
@@ -143,6 +144,11 @@ class TestStorageRequests < StorageShared
 
     content = @client.directories.get(some_bucket_name).files.get(target_object_name)
     assert_equal(content.body, temp_file_content)
+  end
+
+  def test_files_url
+    url = @client.directories.get(some_bucket_name).files.get(some_object_name).url((Time.now + 60).to_i)
+    assert_match(/storage.googleapis.com/, url)
   end
 
   def test_files_public_url
